@@ -1,10 +1,11 @@
 import networkx as nx
+from sklearn.metrics import f1_score
 
 datasets = ['german']
 
 def load_flairs():
 	for lang in datasets:
-		g = nx.read_gpickle('y_data/threads/nx_' + lang + '_tree')
+		g = nx.read_gpickle('../y_data/threads/nx_' + lang + '_tree')
 
 		flairs = {}
 
@@ -53,7 +54,7 @@ def arrange_flairs(input_flairs):
 	return flairs, names
 
 def load_results(params=True):
-	file = open('y_data/liwc_results/german_liwc.txt', 'r')
+	file = open('../y_data/liwc_results/german_liwc.txt', 'r')
 	file = file.readlines()
 
 	results = {}
@@ -96,3 +97,8 @@ def define_inputs(names, results):
 		if item in results:
 			inputs[item] = (names[item], results[item])
 	return inputs
+
+def f1(expected, predicted, average):
+	#macro, micro, weighted, None: shows value for each class
+	print average
+	return f1_score(expected, predicted, average=average) 
