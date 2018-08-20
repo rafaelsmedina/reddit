@@ -1,6 +1,3 @@
-# this file gets the thread graph and analyses the 
-# evolution of proficiency of users over time
-
 import networkx as nx
 import datetime
 import pickle
@@ -16,7 +13,7 @@ hierarchy = {
 }
 
 for lang in datasets:
-	g = nx.read_gpickle('threads/nx_' + lang + '_tree')
+	g = nx.read_gpickle('../y_data/threads/nx_' + lang + '_tree')
 
 	users = {}
 
@@ -46,7 +43,7 @@ for lang in datasets:
 
 	probs = {}
 
-	file = open('knn_10.csv')
+	file = open('../e_ml_methods/grad_boost.csv')
 	for line in file.readlines():
 		id, correct, prob = line.split(',')
 		probs[id.strip(' ')] = [float(i) for i in prob.strip(' [').strip(']\n').split()]
@@ -90,5 +87,6 @@ for lang in datasets:
 			sequences[user] = (profs, probabilities)
 
 	pickle.dump(sequences, open('sequences', 'wb'))
+
 
 

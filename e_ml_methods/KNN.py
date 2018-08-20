@@ -68,7 +68,7 @@ neigh50.fit(x_train, y_train)
 neigh200.fit(x_train, y_train)
 neigh1000.fit(x_train, y_train)
 
-08. Test
+# 08. Test
 
 k = 3
 r = 0
