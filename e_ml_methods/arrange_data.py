@@ -1,5 +1,7 @@
 import networkx as nx
 from sklearn.metrics import f1_score
+import pickle
+import random
 
 datasets = ['german']
 
@@ -99,6 +101,82 @@ def define_inputs(names, results):
 	return inputs
 
 def f1(expected, predicted, average):
-	#macro, micro, weighted, None: shows value for each class
-	print average
+	# macro, micro, weighted, None: shows value for each class
+	# print average
 	return f1_score(expected, predicted, average=average) 
+
+def execute():
+	# 01. load the flairs from the file
+	flairs = load_flairs()
+
+	# 02. arrange the names -> names[post_id] = proficiency-level || flairs[proficiency-level] = quantity 
+	flairs, names = arrange_flairs(flairs)
+
+	# 03. arrange the results -> results[post_id] = [r0, r1, r2, ..., rn]
+	results = load_results(True)
+
+	# 04. inputs[post_id] = (proficiency-level, [r0, r1, r2, ..., rn])
+	inputs = define_inputs(names, results)
+
+	# 05. count
+	total = 0
+	for item in flairs:
+		total = total + flairs[item]
+	print total
+	for item in flairs:
+		print item, ': ', (float(flairs[item])/total)*100, '(', flairs[item] , ')'
+
+	# 06. split training and testing sets
+	keys = inputs.keys()
+
+	random.shuffle(keys)
+	test = random.sample(keys, len(keys)/10)
+
+	level = {}
+
+	level['beginner'] = 0 
+	level['intermediate'] = 1 
+	level['advanced'] = 2 
+	level['native'] = 3
+
+	x_train = []
+	y_train = []
+
+	test_group = []
+
+	for item in inputs:
+
+		if item in test:
+			test_group.append(inputs[item])
+		else:
+			y_train.append(level[inputs[item][0]])
+			x_train.append(inputs[item][1])
+
+	with open('../y_data/dataset/y_train', 'wb') as f:
+   		pickle.dump(y_train, f)
+
+	with open('../y_data/dataset/x_train', 'wb') as f:
+		pickle.dump(x_train, f)
+
+	with open('../y_data/dataset/test', 'wb') as f:
+		pickle.dump(test_group, f)
+
+	with open('../y_data/dataset/level', 'wb') as f:
+		pickle.dump(level, f)
+
+	with open('../y_data/dataset/inputs', 'wb') as f:
+		pickle.dump(inputs, f)
+
+def load():
+	with open('../y_data/dataset/y_train', 'rb') as f:
+		y_train = pickle.load(f)
+	with open('../y_data/dataset/x_train', 'rb') as f:
+		x_train = pickle.load(f)
+	with open('../y_data/dataset/test', 'rb') as f:
+		test_group = pickle.load(f)
+	with open('../y_data/dataset/level', 'rb') as f:
+		level = pickle.load(f)
+	with open('../y_data/dataset/inputs', 'rb') as f:
+		inputs = pickle.load(f)
+
+	return y_train, x_train, test_group, level, inputs
