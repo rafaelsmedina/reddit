@@ -2,9 +2,15 @@ import arrange_data
 from sklearn.neighbors import KNeighborsClassifier
 import random
 
-f1_type = 'macro'
+# arrange_data.execute()
+x, y, inputs = arrange_data.load()
 
-y_train, x_train, test_group, level, inputs = arrange_data.load()
+# x = arrange_data.feature_selection(x, y, k=70)
+train, test = list(arrange_data.split(x, y))[0]
+
+x_train = [x[i] for i in train]
+y_train = [y[i] for i in train]
+
 
 # 07. Begin training
 neigh3 = KNeighborsClassifier(n_neighbors=3)
@@ -29,17 +35,17 @@ k = 3
 r = 0
 w = 0
 
-confusion = [[0 for x in range(4)] for y in range(4)] 
+# confusion = [[0 for x in range(4)] for y in range(4)] 
 
 expected = []
 predicted = []
 
-for item in test_group:
-	k = neigh3.predict([item[1]])[0]
-	confusion[level[item[0]]][k] = confusion[level[item[0]]][k] + 1
-	expected.append([level[item[0]]])
+for item in test:
+	k = neigh3.predict([x[item]])[0]
+	# confusion[y[item]][k] = confusion[y[item]][k] + 1
+	expected.append([y[item]])
 	predicted.append(k)
-	if [level[item[0]]] == k:
+	if [y[item]] == k:
 		r = r + 1
 	else:
 		w = w + 1
@@ -47,29 +53,29 @@ for item in test_group:
 print '----------k = 3-----------'
 print 'right: ', r
 print 'wrong: ', w
-print arrange_data.f1(expected, predicted, 'macro')
-print arrange_data.f1(expected, predicted, 'micro')
+#print arrange_data.f1(expected, predicted, 'macro')
+#print arrange_data.f1(expected, predicted, 'micro')
 print arrange_data.f1(expected, predicted, 'weighted')
-print arrange_data.f1(expected, predicted, None)
+#print arrange_data.f1(expected, predicted, None)
 # for i in range(4):
 # 	for j in range(4):
 # 		print 'ex:', i, 'pred:', j, confusion[i][j]
 
-k = 5
+# k = 5
 r = 0
 w = 0
 
-confusion = [[0 for x in range(4)] for y in range(4)] 
+#confusion = [[0 for x in range(4)] for y in range(4)] 
 
 expected = []
 predicted = []
 
-for item in test_group:
-	k = neigh5.predict([item[1]])[0]
-	confusion[level[item[0]]][k] = confusion[level[item[0]]][k] + 1
-	expected.append([level[item[0]]])
+for item in test:
+	k = neigh5.predict([x[item]])[0]
+	# confusion[y[item]][k] = confusion[y[item]][k] + 1
+	expected.append([y[item]])
 	predicted.append(k)
-	if [level[item[0]]] == k:
+	if [y[item]] == k:
 		r = r + 1
 	else:
 		w = w + 1
@@ -77,34 +83,34 @@ for item in test_group:
 print '----------k = 5-----------'
 print 'right: ', r
 print 'wrong: ', w
-print arrange_data.f1(expected, predicted, 'macro')
-print arrange_data.f1(expected, predicted, 'micro')
+#print arrange_data.f1(expected, predicted, 'macro')
+#print arrange_data.f1(expected, predicted, 'micro')
 print arrange_data.f1(expected, predicted, 'weighted')
-print arrange_data.f1(expected, predicted, None)
+#print arrange_data.f1(expected, predicted, None)
 # for i in range(4):
 # 	for j in range(4):
 # 		print 'ex:', i, 'pred:', j, confusion[i][j]
 
-file = open('knn_5.csv', 'a')
-for item in inputs:
-	print>>file, item, ',', level[inputs[item][0]], ',', neigh5.predict_proba([inputs[item][1]])[0]
-file.close()
+#file = open('knn_5.csv', 'a')
+#for item in inputs:
+#	print>>file, item, ',', level[inputs[item][0]], ',', neigh5.predict_proba([inputs[item][1]])[0]
+#file.close()
 
 # k = 10
 r = 0
 w = 0
 
-confusion = [[0 for x in range(4)] for y in range(4)] 
+#confusion = [[0 for x in range(4)] for y in range(4)] 
 
 expected = []
 predicted = []
 
-for item in test_group:
-	k = neigh10.predict([item[1]])[0]
-	confusion[level[item[0]]][k] = confusion[level[item[0]]][k] + 1
-	expected.append([level[item[0]]])
+for item in test:
+	k = neigh10.predict([x[item]])[0]
+	# confusion[y[item]][k] = confusion[y[item]][k] + 1
+	expected.append([y[item]])
 	predicted.append(k)
-	if [level[item[0]]] == k:
+	if [y[item]] == k:
 		r = r + 1
 	else:
 		w = w + 1
@@ -112,34 +118,34 @@ for item in test_group:
 print '----------k = 10-----------'
 print 'right: ', r
 print 'wrong: ', w
-print arrange_data.f1(expected, predicted, 'macro')
-print arrange_data.f1(expected, predicted, 'micro')
+#print arrange_data.f1(expected, predicted, 'macro')
+#print arrange_data.f1(expected, predicted, 'micro')
 print arrange_data.f1(expected, predicted, 'weighted')
-print arrange_data.f1(expected, predicted, None)
+#print arrange_data.f1(expected, predicted, None)
 # for i in range(4):
 # 	for j in range(4):
 # 		print 'ex:', i, 'pred:', j, confusion[i][j]
 
-file = open('knn_10.csv', 'a')
-for item in inputs:
-	print>>file, item, ',', level[inputs[item][0]], ',', neigh10.predict_proba([inputs[item][1]])[0]
-file.close()
+#file = open('knn_10.csv', 'a')
+#for item in inputs:
+#	print>>file, item, ',', level[inputs[item][0]], ',', neigh10.predict_proba([inputs[item][1]])[0]
+#file.close()
 
 # k = 20
 r = 0
 w = 0
 
-confusion = [[0 for x in range(4)] for y in range(4)] 
+#confusion = [[0 for x in range(4)] for y in range(4)] 
 
 expected = []
 predicted = []
 
-for item in test_group:
-	k = neigh20.predict([item[1]])[0]
-	confusion[level[item[0]]][k] = confusion[level[item[0]]][k] + 1
-	expected.append([level[item[0]]])
+for item in test:
+	k = neigh20.predict([x[item]])[0]
+	# confusion[y[item]][k] = confusion[y[item]][k] + 1
+	expected.append([y[item]])
 	predicted.append(k)
-	if [level[item[0]]] == k:
+	if [y[item]] == k:
 		r = r + 1
 	else:
 		w = w + 1
@@ -147,10 +153,10 @@ for item in test_group:
 print '----------k = 20-----------'
 print 'right: ', r
 print 'wrong: ', w
-print arrange_data.f1(expected, predicted, 'macro')
-print arrange_data.f1(expected, predicted, 'micro')
+#print arrange_data.f1(expected, predicted, 'macro')
+#print arrange_data.f1(expected, predicted, 'micro')
 print arrange_data.f1(expected, predicted, 'weighted')
-print arrange_data.f1(expected, predicted, None)
+#print arrange_data.f1(expected, predicted, None)
 # for i in range(4):
 # 	for j in range(4):
 # 		print 'ex:', i, 'pred:', j, confusion[i][j]
@@ -159,17 +165,17 @@ print arrange_data.f1(expected, predicted, None)
 r = 0
 w = 0
 
-confusion = [[0 for x in range(4)] for y in range(4)] 
+#confusion = [[0 for x in range(4)] for y in range(4)] 
 
 expected = []
 predicted = []
 
-for item in test_group:
-	k = neigh50.predict([item[1]])[0]
-	confusion[level[item[0]]][k] = confusion[level[item[0]]][k] + 1
-	expected.append([level[item[0]]])
+for item in test:
+	k = neigh50.predict([x[item]])[0]
+	# confusion[y[item]][k] = confusion[y[item]][k] + 1
+	expected.append([y[item]])
 	predicted.append(k)
-	if [level[item[0]]] == k:
+	if [y[item]] == k:
 		r = r + 1
 	else:
 		w = w + 1
@@ -177,10 +183,10 @@ for item in test_group:
 print '----------k = 50-----------'
 print 'right: ', r
 print 'wrong: ', w
-print arrange_data.f1(expected, predicted, 'macro')
-print arrange_data.f1(expected, predicted, 'micro')
+# print arrange_data.f1(expected, predicted, 'macro')
+# print arrange_data.f1(expected, predicted, 'micro')
 print arrange_data.f1(expected, predicted, 'weighted')
-print arrange_data.f1(expected, predicted, None)
+# print arrange_data.f1(expected, predicted, None)
 # for i in range(4):
 # 	for j in range(4):
 # 		print 'ex:', i, 'pred:', j, confusion[i][j]
@@ -189,17 +195,17 @@ print arrange_data.f1(expected, predicted, None)
 r = 0
 w = 0
 
-confusion = [[0 for x in range(4)] for y in range(4)] 
+#confusion = [[0 for x in range(4)] for y in range(4)] 
 
 expected = []
 predicted = []
 
-for item in test_group:
-	k = neigh200.predict([item[1]])[0]
-	confusion[level[item[0]]][k] = confusion[level[item[0]]][k] + 1
-	expected.append([level[item[0]]])
+for item in test:
+	k = neigh200.predict([x[item]])[0]
+	# confusion[y[item]][k] = confusion[y[item]][k] + 1
+	expected.append([y[item]])
 	predicted.append(k)
-	if [level[item[0]]] == k:
+	if [y[item]] == k:
 		r = r + 1
 	else:
 		w = w + 1
@@ -207,10 +213,10 @@ for item in test_group:
 print '----------k = 200-----------'
 print 'right: ', r
 print 'wrong: ', w
-print arrange_data.f1(expected, predicted, 'macro')
-print arrange_data.f1(expected, predicted, 'micro')
+#print arrange_data.f1(expected, predicted, 'macro')
+#print arrange_data.f1(expected, predicted, 'micro')
 print arrange_data.f1(expected, predicted, 'weighted')
-print arrange_data.f1(expected, predicted, None)
+#print arrange_data.f1(expected, predicted, None)
 # for i in range(4):
 # 	for j in range(4):
 # 		print 'ex:', i, 'pred:', j, confusion[i][j]
@@ -219,17 +225,17 @@ print arrange_data.f1(expected, predicted, None)
 r = 0
 w = 0
 
-confusion = [[0 for x in range(4)] for y in range(4)] 
+#confusion = [[0 for x in range(4)] for y in range(4)] 
 
 expected = []
 predicted = []
 
-for item in test_group:
-	k = neigh1000.predict([item[1]])[0]
-	confusion[level[item[0]]][k] = confusion[level[item[0]]][k] + 1
-	expected.append([level[item[0]]])
+for item in test:
+	k = neigh1000.predict([x[item]])[0]
+	# confusion[y[item]][k] = confusion[y[item]][k] + 1
+	expected.append([y[item]])
 	predicted.append(k)
-	if [level[item[0]]] == k:
+	if [y[item]] == k:
 		r = r + 1
 	else:
 		w = w + 1
@@ -237,10 +243,10 @@ for item in test_group:
 print '----------k = 1000-----------'
 print 'right: ', r
 print 'wrong: ', w
-print arrange_data.f1(expected, predicted, 'macro')
-print arrange_data.f1(expected, predicted, 'micro')
+#print arrange_data.f1(expected, predicted, 'macro')
+#print arrange_data.f1(expected, predicted, 'micro')
 print arrange_data.f1(expected, predicted, 'weighted')
-print arrange_data.f1(expected, predicted, None)
+#print arrange_data.f1(expected, predicted, None)
 # for i in range(4):
 # 	for j in range(4):
 # 		print 'ex:', i, 'pred:', j, confusion[i][j]

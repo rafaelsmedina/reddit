@@ -2,6 +2,9 @@ import networkx as nx
 from sklearn.metrics import f1_score
 import pickle
 import random
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+from sklearn.model_selection import KFold
 
 datasets = ['german']
 
@@ -126,12 +129,6 @@ def execute():
 	for item in flairs:
 		print item, ': ', (float(flairs[item])/total)*100, '(', flairs[item] , ')'
 
-	# 06. split training and testing sets
-	keys = inputs.keys()
-
-	random.shuffle(keys)
-	test = random.sample(keys, len(keys)/10)
-
 	level = {}
 
 	level['beginner'] = 0 
@@ -139,44 +136,35 @@ def execute():
 	level['advanced'] = 2 
 	level['native'] = 3
 
-	x_train = []
-	y_train = []
-
-	test_group = []
+	x = []
+	y = []
 
 	for item in inputs:
-
-		if item in test:
-			test_group.append(inputs[item])
-		else:
-			y_train.append(level[inputs[item][0]])
-			x_train.append(inputs[item][1])
-
-	with open('../y_data/dataset/y_train', 'wb') as f:
-   		pickle.dump(y_train, f)
-
-	with open('../y_data/dataset/x_train', 'wb') as f:
-		pickle.dump(x_train, f)
-
-	with open('../y_data/dataset/test', 'wb') as f:
-		pickle.dump(test_group, f)
-
-	with open('../y_data/dataset/level', 'wb') as f:
-		pickle.dump(level, f)
+		x.append(inputs[item][1])
+		y.append(level[inputs[item][0]])
 
 	with open('../y_data/dataset/inputs', 'wb') as f:
-		pickle.dump(inputs, f)
+   		pickle.dump(inputs, f)
+
+	with open('../y_data/dataset/x', 'wb') as f:
+   		pickle.dump(x, f)
+
+	with open('../y_data/dataset/y', 'wb') as f:
+		pickle.dump(y, f)
 
 def load():
-	with open('../y_data/dataset/y_train', 'rb') as f:
-		y_train = pickle.load(f)
-	with open('../y_data/dataset/x_train', 'rb') as f:
-		x_train = pickle.load(f)
-	with open('../y_data/dataset/test', 'rb') as f:
-		test_group = pickle.load(f)
-	with open('../y_data/dataset/level', 'rb') as f:
-		level = pickle.load(f)
+	with open('../y_data/dataset/x', 'rb') as f:
+		x = pickle.load(f)
+	with open('../y_data/dataset/y', 'rb') as f:
+		y = pickle.load(f)
 	with open('../y_data/dataset/inputs', 'rb') as f:
 		inputs = pickle.load(f)
 
-	return y_train, x_train, test_group, level, inputs
+	return x, y, inputs
+
+def feature_selection(x, y, k=50):
+	return SelectKBest(chi2, k).fit_transform(x, y)
+
+def split(x, y):
+	kf = KFold(n_splits=10, shuffle=True, random_state=2)
+	return kf.split(x, y)
