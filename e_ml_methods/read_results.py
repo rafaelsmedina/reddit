@@ -1,7 +1,7 @@
 corrects = {}
 probs = {}
 
-file = open('knn_10.csv')
+file = open('gradient_boost.csv')
 for line in file.readlines():
 	id, correct, prob = line.split(',')
 	corrects[id] = correct

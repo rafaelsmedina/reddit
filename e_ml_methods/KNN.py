@@ -18,7 +18,7 @@ for train, test in arrange_data.split(x, y):
 	# neigh5 = KNeighborsClassifier(n_neighbors=5)
 	# neigh10 = KNeighborsClassifier(n_neighbors=10)
 	# neigh20 = KNeighborsClassifier(n_neighbors=20)
-	neigh50 = KNeighborsClassifier(n_neighbors=50)
+	neigh50 = KNeighborsClassifier(n_neighbors=100)
 	# neigh200 = KNeighborsClassifier(n_neighbors=200)
 	# neigh1000 = KNeighborsClassifier(n_neighbors=1000)
 

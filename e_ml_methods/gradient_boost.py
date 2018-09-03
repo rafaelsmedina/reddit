@@ -14,7 +14,7 @@ for train, test in arrange_data.split(x, y):
 
 
 	# 07. Begin training
-	gb = GradientBoostingClassifier(max_depth=5)
+	gb = GradientBoostingClassifier(max_depth=3)
 
 	gb.fit(x_train, y_train)
 
@@ -37,13 +37,13 @@ for train, test in arrange_data.split(x, y):
 		else:
 			w = w + 1
 
-	print '----------Gradient Boost-----------'
-	print 'right: ', r
-	print 'wrong: ', w
+	#print '----------Gradient Boost-----------'
+	#print 'right: ', r
+	#print 'wrong: ', w
 	#print arrange_data.f1(expected, predicted, 'macro')
 	#print arrange_data.f1(expected, predicted, 'micro')
 	print arrange_data.f1(expected, predicted, 'weighted')
-	avg.append(arrange_data.f1(expected, predicted, 'weighted'))
+	#avg.append(arrange_data.f1(expected, predicted, 'weighted'))
 	#print arrange_data.f1(expected, predicted, None)
 	# for i in range(4):
 	# 	for j in range(4):
@@ -54,8 +54,8 @@ for train, test in arrange_data.split(x, y):
 	#	print>>file, item, ',', level[inputs[item][0]], ',', gb.predict_proba([inputs[item][1]])[0]
 	#file.close()
 
-a = 0
-for item in avg:
-	print item
-	a = a + item
-print a/10
+#a = 0
+#for item in avg:
+#	print item
+#	a = a + item
+#print a/10

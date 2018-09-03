@@ -12,7 +12,7 @@ for train, test in arrange_data.split(x, y):
 	y_train = [y[i] for i in train]
 
 	# 07. Begin training
-	lr = LogisticRegression(C=0.1)
+	lr = LogisticRegression(C=0.001)
 
 	lr.fit(x_train, y_train)
 
@@ -35,9 +35,9 @@ for train, test in arrange_data.split(x, y):
 		else:
 			w = w + 1
 
-	print '----------Logistic Regression-----------'
-	print 'right: ', r
-	print 'wrong: ', w
+	# print '----------Logistic Regression-----------'
+	# print 'right: ', r
+	# print 'wrong: ', w
 	print arrange_data.f1(expected, predicted, 'weighted')
 	# for i in range(4):
 	# 	for j in range(4):
