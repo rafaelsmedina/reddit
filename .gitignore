@@ -1,4 +1,9 @@
 y_data/
 z_other/
 *.pyc
+e_ml_methods/grad_boost.csv
+e_ml_methods/sequences
+e_ml_methods/sequences2
 e_ml_methods/*.csv
+d_analyse_graphs/growth
+d_analyse_graphs/correct

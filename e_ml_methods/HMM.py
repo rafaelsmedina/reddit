@@ -4,7 +4,7 @@ import pickle
 import statistics
 
 #file = open('sequences_only_up', 'r')
-file = open('sequences', 'r')
+file = open('sequences2', 'r')
 sequences = pickle.load(file)
 
 print len(sequences)

@@ -43,7 +43,7 @@ for lang in datasets:
 
 	probs = {}
 
-	file = open('../e_ml_methods/grad_boost.csv')
+	file = open('../e_ml_methods/xg_boost.csv')
 	for line in file.readlines():
 		id, correct, prob = line.split(',')
 		probs[id.strip(' ')] = [float(i) for i in prob.strip(' [').strip(']\n').split()]
@@ -86,7 +86,7 @@ for lang in datasets:
 		if seq and len(profs) > 1 and 3 not in profs:
 			sequences[user] = (profs, probabilities)
 
-	pickle.dump(sequences, open('sequences', 'wb'))
+	pickle.dump(sequences, open('sequences2', 'wb'))
 
 
 

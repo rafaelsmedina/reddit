@@ -7,32 +7,40 @@ import numpy as np
 x, y, inputs = arrange_data.load()
 
 avg = []
+
+level = {}
+
+level['beginner'] = 0 
+level['intermediate'] = 1 
+level['advanced'] = 2 
+level['native'] = 3
+
+
 for train, test in arrange_data.split(x, y):
 
 	x_train = np.array([x[i] for i in train])
 	y_train = [y[i] for i in train]
 
-	model = XGBClassifier()
+	model = XGBClassifier(max_depth=5, booster='dart')
 	model.fit(x_train, y_train)
 
-	# # make predictions for test data
-	# y_pred = model.predict(X_test)
-	# predictions = [round(value) for value in y_pred]
-	# # evaluate predictions
-	# accuracy = accuracy_score(y_test, predictions)
-	# print("Accuracy: %.2f%%" % (accuracy * 100.0))
+	file = open('xg_boost.csv', 'a')
+	for item in inputs:
+		print>>file, item, ',', level[inputs[item][0]], ',', model.predict_proba([inputs[item][1]])[0]
+	file.close()
+	break
 
-	expected = []
-	predicted = []
+# 	expected = []
+# 	predicted = []
 
 
-	for item in test:
-		k = model.predict([x[item]])[0]
+# 	for item in test:
+# 		k = model.predict([x[item]])[0]
 
-		expected.append([y[item]])
-		predicted.append(k)
+# 		expected.append([y[item]])
+# 		predicted.append(k)
 
-	avg.append(arrange_data.f1(expected, predicted, 'weighted'))
+# 	avg.append(arrange_data.f1(expected, predicted, 'weighted'))
 
-for item in avg:
-	print item
+# for item in avg:
+# 	print item
