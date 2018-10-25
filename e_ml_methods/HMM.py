@@ -19,6 +19,8 @@ values[2] = 2
 
 real = {}
 predito = {}
+porc_pred = {}
+mean_p = {}
 
 real['0'] = 0
 real['1'] = 0
@@ -26,6 +28,7 @@ real['2'] = 0
 real['01'] = 0
 real['02'] = 0
 real['12'] = 0
+real['012'] = 0
 
 predito['0'] = 0
 predito['1'] = 0
@@ -33,6 +36,23 @@ predito['2'] = 0
 predito['01'] = 0
 predito['02'] = 0
 predito['12'] = 0
+predito['012'] = 0
+
+porc_pred['0'] = []
+porc_pred['1'] = []
+porc_pred['2'] = []
+porc_pred['01'] = []
+porc_pred['02'] = []
+porc_pred['12'] = []
+porc_pred['012'] = []
+
+mean_p['0'] = []
+mean_p['1'] = []
+mean_p['2'] = []
+mean_p['01'] = []
+mean_p['02'] = []
+mean_p['12'] = []
+mean_p['012'] = []
 
 for item in sequences:
 	proficiencias = sequences[item][0]
@@ -66,20 +86,32 @@ for item in sequences:
 		for i in range(int(first_change[1]), len(proficiencias)):
 			lista.append(2)
 
-		print proficiencias
+		key = None
+		#print proficiencias
 		if 0 in proficiencias and 1 not in proficiencias and 2 not in proficiencias:
 			real['0'] = real['0'] + 1
+			key = '0'
 		elif 0 not in proficiencias and 1 in proficiencias and 2 not in proficiencias:
 			real['1'] = real['1'] + 1
+			key = '1'
 		elif 0 not in proficiencias and 1 not in proficiencias and 2 in proficiencias:
 			real['2'] = real['2'] + 1
+			key = '2'
 		elif 0 in proficiencias and 1 in proficiencias and 2 not in proficiencias:
 			real['01'] = real['01'] + 1
+			key = '01'
 		elif 0 in proficiencias and 1 not in proficiencias and 2 in proficiencias:
 			real['02'] = real['02'] + 1
+			key = '02'
 		elif 0 not in proficiencias and 1 in proficiencias and 2 in proficiencias:
 			real['12'] = real['12'] + 1
-		print lista
+			key = '12'
+		elif 0 in proficiencias and 1 in proficiencias and 2 in proficiencias:
+			real['012'] = real['012'] + 1
+			key = '012'
+
+		#print lista
+		
 
 		if 0 in lista and 1 not in lista and 2 not in lista:
 			predito['0'] = predito['0'] + 1
@@ -88,11 +120,14 @@ for item in sequences:
 		elif 0 not in lista and 1 not in lista and 2 in lista:
 			predito['2'] = predito['2'] + 1
 		elif 0 in lista and 1 in lista and 2 not in lista:
-			predito['01'] = predito['01'] + 1
+			predito['01'] = predito['01'] + 1	
 		elif 0 in lista and 1 not in lista and 2 in lista:
 			predito['02'] = predito['02'] + 1
 		elif 0 not in lista and 1 in lista and 2 in lista:
 			predito['12'] = predito['12'] + 1
+		elif 0 in lista and 1 in lista and 2 in lista:
+			predito['012'] = predito['012'] + 1
+			
 
 		certos = 0
 		total = 0
@@ -104,10 +139,17 @@ for item in sequences:
 			t=t+1
 			values[proficiencias[i]] = values[proficiencias[i]] + 1
 		corretos.append((float(certos)/float(total))*100)
-		print "{0:.2f}".format((float(certos)/float(total))*100)
-		print '----'
+		porc_pred[key].append(float(certos)/float(total))
+		mean_p[key].append(len(item))
+		#print "{0:.2f}".format((float(certos)/float(total))*100)
+		#print '----'
 
 print 'media dos acertos por post:', statistics.mean(corretos)
 print 'quantidade de posts corretamente etiquetados:', "{0:.2f}".format((float(c)/float(t))*100)
 print t, values
 print real, predito
+for key in porc_pred:
+	print key, statistics.mean(porc_pred[key])
+print real, predito
+for key in mean_p:
+	print key, statistics.mean(mean_p[key])
