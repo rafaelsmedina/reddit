@@ -18,7 +18,7 @@ for train, test in arrange_data.split(x, y):
 	# neigh5 = KNeighborsClassifier(n_neighbors=5)
 	# neigh10 = KNeighborsClassifier(n_neighbors=10)
 	# neigh20 = KNeighborsClassifier(n_neighbors=20)
-	neigh50 = KNeighborsClassifier(n_neighbors=100)
+	neigh50 = KNeighborsClassifier(n_neighbors=50)
 	# neigh200 = KNeighborsClassifier(n_neighbors=200)
 	# neigh1000 = KNeighborsClassifier(n_neighbors=1000)
 
@@ -166,14 +166,14 @@ for train, test in arrange_data.split(x, y):
 	r = 0
 	w = 0
 
-	#confusion = [[0 for x in range(4)] for y in range(4)] 
+	confusion = [[0 for m in range(6)] for n in range(6)] 
 
 	expected = []
 	predicted = []
 
 	for item in test:
 		k = neigh50.predict([x[item]])[0]
-		# confusion[y[item]][k] = confusion[y[item]][k] + 1
+		confusion[y[item]][k] = confusion[y[item]][k] + 1
 		expected.append([y[item]])
 		predicted.append(k)
 		if [y[item]] == k:
@@ -187,6 +187,7 @@ for train, test in arrange_data.split(x, y):
 	# print arrange_data.f1(expected, predicted, 'macro')
 	# print arrange_data.f1(expected, predicted, 'micro')
 	avg.append(arrange_data.f1(expected, predicted, 'weighted'))
+	print confusion
 	# print arrange_data.f1(expected, predicted, None)
 	# for i in range(4):
 	# 	for j in range(4):

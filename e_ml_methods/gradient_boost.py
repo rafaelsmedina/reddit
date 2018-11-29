@@ -29,38 +29,39 @@ for train, test in arrange_data.split(x, y):
 	r = 0
 	w = 0
 
-	#confusion = [[0 for x in range(4)] for y in range(4)] 
+	confusion = [[0 for m in range(6)] for n in range(6)] 
 
-	#expected = []
-	#predicted = []
+	expected = []
+	predicted = []
 
-	#for item in test:
-		#k = gb.predict([x[item]])[0]
-		# confusion[level[item[0]]][k] = confusion[level[item[0]]][k] + 1
-		#expected.append([y[item]])
-		#predicted.append(k)
-		#if [y[item]] == k:
-		#	r = r + 1
-		#else:
-		#	w = w + 1
+	for item in test:
+		k = gb.predict([x[item]])[0]
+		confusion[y[item]][k] = confusion[y[item]][k] + 1
+		expected.append([y[item]])
+		predicted.append(k)
+		if [y[item]] == k:
+			r = r + 1
+		else:
+			w = w + 1
 
 	#print '----------Gradient Boost-----------'
 	#print 'right: ', r
 	#print 'wrong: ', w
 	#print arrange_data.f1(expected, predicted, 'macro')
 	#print arrange_data.f1(expected, predicted, 'micro')
-	#print arrange_data.f1(expected, predicted, 'weighted')
+	print arrange_data.f1(expected, predicted, 'weighted')
+	print confusion
 	#avg.append(arrange_data.f1(expected, predicted, 'weighted'))
 	#print arrange_data.f1(expected, predicted, None)
 	# for i in range(4):
 	# 	for j in range(4):
 	# 		print 'ex:', i, 'pred:', j, confusion[i][j]
 
-	file = open('grad_boost.csv', 'a')
-	for item in inputs:
-		print>>file, item, ',', level[inputs[item][0]], ',', gb.predict_proba([inputs[item][1]])[0]
-	file.close()
-	break
+	#file = open('grad_boost.csv', 'a')
+	#for item in inputs:
+	#	print>>file, item, ',', level[inputs[item][0]], ',', gb.predict_proba([inputs[item][1]])[0]
+	#file.close()
+	#break
 
 #a = 0
 #for item in avg:

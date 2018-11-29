@@ -150,6 +150,6 @@ print t, values
 print real, predito
 for key in porc_pred:
 	print key, statistics.mean(porc_pred[key])
-print real, predito
+
 for key in mean_p:
 	print key, statistics.mean(mean_p[key])

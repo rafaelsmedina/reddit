@@ -58,6 +58,26 @@ def arrange_flairs(input_flairs):
 
 	return flairs, names
 
+def arrange_flairs2(input_flairs):
+	german_levels = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2']
+	flairs = {}
+	names = {}
+
+	for flair in input_flairs:
+
+		for item in german_levels:
+			label = None
+			if item in input_flairs[flair].lower():
+				label = item
+				names[flair] = label
+				if label not in flairs:
+					flairs[label] = 1
+				else:
+					flairs[label] = flairs[label] + 1
+				break
+
+	return flairs, names
+
 def load_results(params=True):
 	file = open('../y_data/liwc_results/german_liwc.txt', 'r')
 	file = file.readlines()
@@ -113,7 +133,7 @@ def execute():
 	flairs = load_flairs()
 
 	# 02. arrange the names -> names[post_id] = proficiency-level || flairs[proficiency-level] = quantity 
-	flairs, names = arrange_flairs(flairs)
+	flairs, names = arrange_flairs2(flairs)
 
 	# 03. arrange the results -> results[post_id] = [r0, r1, r2, ..., rn]
 	results = load_results(True)
@@ -135,6 +155,13 @@ def execute():
 	level['intermediate'] = 1 
 	level['advanced'] = 2 
 	level['native'] = 3
+
+	level['a1'] = 0
+	level['a2'] = 1
+	level['b1'] = 2 
+	level['b2'] = 3
+	level['c1'] = 4
+	level['c2'] = 5
 
 	x = []
 	y = []
